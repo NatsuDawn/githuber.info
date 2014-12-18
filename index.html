@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" ng-app="githuber">
 
 <head>
     <meta charset='utf-8'>
@@ -15,18 +15,28 @@
     <meta name="keywords" content="GitHub,招聘,人才">
     <meta name="author" content="梁杰,numbbbbb,@梁杰_numbbbbb">
     <link rel="stylesheet" href="/static/css/bootstrap.min.css">
-    <script src="/static/js/oauth.min.js"></script>
-    <script src="/static/js/jquery-2.1.1.min.js"></script>
-    <script src="/static/js/bootstrap.min.js"></script>
     <style>
     .table td,
     .table th {
         text-align: center;
     }
+    .infoNote {
+        background: none repeat scroll 0% 0% #FFF;
+        box-shadow: 2px 3px 1px rgba(0, 0, 0, 0.15), -1px 0px 0px rgba(0, 0, 0, 0.03), 1px 0px 0px rgba(0, 0, 0, 0.03), 0px 1px 0px rgba(0, 0, 0, 0.12);
+        border: 1px solid #e6e8e9;
+    }
+    #codeChart {
+        width: 800px;
+        height: 400px;
+    }
+    #starChart {
+        width: 700px;
+        height: 400px;
+    }
     </style>
 </head>
 
-<body style="background-image:url('/static/img/bg.png');">
+<body style="background-image:url('/static/img/bg.png');" ng-controller="GithuberCtl">
     <nav class="navbar navbar-default navbar-fixed-top navbar-inverse" role="navigation">
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
@@ -37,9 +47,9 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="margin-left:15%;">
                 <form class="navbar-form navbar-left" role="search">
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="输入用户名">
+                        <input type="text" class="form-control" placeholder="输入用户名" ng-model="targetUser">
                     </div>
-                    <button type="submit" class="btn btn-default">搜索</button>
+                    <button type="submit" class="btn btn-default" ng-click="searchUser()">搜索</button>
                 </form>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="#">打赏</a>
@@ -48,9 +58,7 @@
                     </li>
                 </ul>
             </div>
-            <!-- /.navbar-collapse -->
         </div>
-        <!-- /.container-fluid -->
     </nav>
     <div class="container-fluid" style="margin-top:50px;">
         <div class="row">
@@ -77,7 +85,7 @@
             </div>
             <div class="col-lg-6 col-lg-offset-1">
                 <div class="row">
-                    <div class="col-lg-12" style="margin-top:30px;background: none repeat scroll 0% 0% #FFF;box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.15), -1px 0px 0px rgba(0, 0, 0, 0.03), 1px 0px 0px rgba(0, 0, 0, 0.03), 0px 1px 0px rgba(0, 0, 0, 0.12);">
+                    <div class="col-lg-12 infoNote" style="margin-top:30px;">
                         <h2 style="margin:0px;margin-left:-15px;padding:5px;background-color:black;width:12%;text-align:center;color:white;font-size:18px;">个人信息</h2>
                         <div class="row" style="margin-top:30px;padding:30px;">
                             <div class="col-lg-2 col-lg-offset-1">
@@ -92,245 +100,52 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-2">
-                                <ul class="list-unstyled" style="margin-top:40px;">
+                            <div class="col-lg-4">
+                                <ul class="list-unstyled">
                                     <li>
-                                        <h4>梁杰（numbbbbb）</h4>
+                                        <h4>{{githuber.name}}（{{githuber.login}}）</h4>
                                     </li>
-                                    <li>就职于xxx公司</li>
-                                    <li>lj925184928@gmail.com</li>
-                                    <li>梁杰.com</li>
+                                    <li>就职于{{githuber.company}}公司</li>
+                                    <li>{{githuber.email}}</li>
+                                    <li>{{githuber.page}}</li>
                                 </ul>
                             </div>
-                            <div class="col-lg-4 col-lg-offset-2">
-                                <ul class="list-unstyled" style="margin-top:20px;">
+                            <div class="col-lg-4">
+                                <ul class="list-unstyled" style="margin-top:-10px">
                                     <li>
-                                        梁杰有<span style="font-size:34px;">500</span>个粉丝
+                                        {{githuber.name}}有<span style="font-size:34px;">{{githuber.followers}}</span>个粉丝
                                     </li>
-                                    <li><span style="font-size:34px;">20</span>个项目</li>
-                                    <li>总计编写了<span style="font-size:34px;">300000</span>行代码</li>
+                                    <li><span style="font-size:34px;">{{githuber.public_repos}}</span>个项目</li>
+                                    <li>总计编写了<span style="font-size:34px;">{{githuber.codings}}</span>行代码</li>
                                 </ul>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-12" style="margin-top:30px;background: none repeat scroll 0% 0% #FFF;box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.15), -1px 0px 0px rgba(0, 0, 0, 0.03), 1px 0px 0px rgba(0, 0, 0, 0.03), 0px 1px 0px rgba(0, 0, 0, 0.12);">
+                    <div class="col-lg-12 infoNote" style="margin-top:30px;">
                         <h2 style="margin:0px;margin-left:-15px;padding:5px;background-color:black;width:12%;text-align:center;color:white;font-size:18px;">特性分析</h2>
                         <div class="row" style="margin-top:30px;padding:30px;">
-                            <div class="col-lg-2 col-lg-offset-1">
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <img src="https://octodex.github.com/images/kimonotocat.png" alt="" class="img-responsive">
-                                    </div>
-                                </div>
-                                <div class="row" style="margin-top:5px;">
-                                    <div class="col-lg-12">
-                                        <button class="btn btn-large btn-success btn-block">加入待选列表</button>
-                                    </div>
-                                </div>
+                        <div class="row">
+                            <div id="codeChart"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div id="starChart"></div>
                             </div>
-                            <div class="col-lg-2">
-                                <ul class="list-unstyled" style="margin-top:40px;">
-                                    <li>
-                                        <h4>梁杰（numbbbbb）</h4>
-                                    </li>
-                                    <li>就职于xxx公司</li>
-                                    <li>lj925184928@gmail.com</li>
-                                    <li>梁杰.com</li>
-                                </ul>
+                            <div class="col-lg-6">
+                                <div id="contriChart"></div>
                             </div>
-                            <div class="col-lg-4 col-lg-offset-2">
-                                <ul class="list-unstyled" style="margin-top:20px;">
-                                    <li>
-                                        梁杰有<span style="font-size:34px;">500</span>个粉丝
-                                    </li>
-                                    <li><span style="font-size:34px;">20</span>个项目</li>
-                                    <li>总计编写了<span style="font-size:34px;">300000</span>行代码</li>
-                                </ul>
-                            </div>
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <script type="text/javascript">
-    $(function() {
-        var Barrier = function() { // 用于等待多个ajax完成
-            this.barrierNumber = 0
-            this.checkFinish = function(cb) {
-                that = this
-                var clock = function() {
-                    if (that.barrierNumber === 1) {
-                        cb()
-                    } else {
-                        setTimeout(clock, 200)
-                    }
-                }
-                setTimeout(clock, 200)
-            }
-        }
-        languageBytesInOwnedRepos = {} // 自己repo的语言字节数统计 注意这里是字节数不是行数 GitHub不提供行数
-        languageOfStarredRepos = {} // star repo的语言统计 只统计个数 比如Python的repo 100个
-        ownedRepoStars = {} // TODO：自己的repo被star的次数以及repo的信息，比如title description以及readme 之后鼠标移动到repo上会显示这些信息
-        contributionBytes = 0 // 自己给其他repo贡献的字节数
-        $(".nav-pills a").css({
-            "borderRadius": "0px",
-        })
-        OAuth.initialize("sGKS5HvngIOeFDkWtsGIpEGuWAU")
-        OAuth.popup('github').done(function(github) {
-            // 获取个人信息
-            // github.get({
-            //     url: "https://api.github.com/users/numbbbbb",
-            //     dataType: "json"
-            // }).always(function(data) {
-            //     console.log(data)
-            // });
-            // 获取readme和issue内容
-            // github.get({
-            //         url: "https://api.github.com/repos/numbbbbb/the-swift-programming-language-in-chinese/readme",
-            //         dataType: "json"
-            //     }).always(function(data) {
-            //         readme = decodeURIComponent(escape(window.atob(data.content)));
-            //     }),
-            //     github.get({
-            //         url: "https://api.github.com/repos/numbbbbb/the-swift-programming-language-in-chinese/issues?page=1&per_page=10000",
-            //         data: {
-            //             state: "all"
-            //         },
-            //         dataType: "json"
-            //     }).always(function(data) {
-            //         for (var i in data) {
-            //             var issue = []
-            //             issue.title = data[i].title;
-            //             issue.body = data[i].body;
-            //             issue.comments = data[i].comments;
-            //             issue.comments_url = data[i].comments_url;
-            //             issue.comments_body = [];
-            //             issues.push(issue);
-            //         }
-            //         $.map(issues, function(issue, i) {
-            //             if (issue.comments > 0) {
-            //                 github.get({
-            //                     url: issue.comments_url + "?page=1&per_page=10000",
-            //                     dataType: "json"
-            //                 }).always(function(data) {
-            //                     for (var index in data) {
-            //                         issues[i].comments_body.push(data[index].body);
-            //                     }
-            //                 })
-            //             }
-            //         })
-
-            //     })
-
-            // 获取自己的repo并统计代码字节数
-            github.get({
-                url: "https://api.github.com/users/numbbbbb/repos?page=1&per_page=10000",
-                dataType: "json"
-            }).done(function(data) {
-                var barrier = new Barrier()
-                barrier.barrierNumber = data.length
-                $.map(data, function(repo, i) {
-                    github.get({
-                        url: "https://api.github.com/repos/numbbbbb/" + repo.name + "/languages",
-                        dataType: "json"
-                    }).done(function(data) {
-                        barrier.barrierNumber--
-                            if ("status" in data || $.isEmptyObject(data)) {
-                                return
-                            }
-                        $.each(data, function(language, lines) {
-                            if (isNaN(lines)) {
-                                return
-                            }
-                            if (!(language in languageBytesInOwnedRepos)) {
-                                languageBytesInOwnedRepos[language] = 0
-                            }
-                            languageBytesInOwnedRepos[language] += lines
-                        })
-                    })
-                })
-                barrier.checkFinish(function() {
-                    console.log(languageBytesInOwnedRepos)
-                })
-            })
-
-            // 获取star的repo并统计语言
-            var getStarredInfo = function(pageNumber) {
-                github.get({
-                    url: "https://api.github.com/users/numbbbbb/starred?page=" + pageNumber + "&per_page=100",
-                    dataType: "json"
-                }).done(function(data) {
-                    $.map(data, function(repo, i) {
-                        if (repo.language) {
-                            if (!(repo.language in languageOfStarredRepos)) {
-                                languageOfStarredRepos[repo.language] = 0
-                            }
-                            languageOfStarredRepos[repo.language] += 1
-                        }
-                    })
-                    if (data.length === 100) {
-                        getStarredInfo(pageNumber + 1)
-                    } else {
-                        console.log(languageOfStarredRepos)
-                    }
-                })
-            }
-            getStarredInfo(1)
-
-            // 获取fork的repo并统计自己在其中的贡献字节数
-            github.get({
-                url: "https://api.github.com/users/numbbbbb/repos?page=1&per_page=10000",
-                dataType: "json"
-            }).done(function(data) {
-                var barrier = new Barrier()
-                barrier.barrierNumber = data.length
-                $.map(data, function(repo, i) {
-                    github.get({
-                        url: "https://api.github.com/repos/numbbbbb/" + repo.name,
-                        dataType: "json"
-                    }).done(function(data) {
-                        if (!("parent" in data) || $.isEmptyObject(data)) {
-                            barrier.barrierNumber--
-                                return
-                        }
-                        var getContributionInfo = function(pageNumber) {
-                            github.get({
-                                url: "https://api.github.com/repos/" + data.parent.owner.login + "/" + data.name + "/stats/contributors?page=" + pageNumber + "&per_page=100",
-                                dataType: "json"
-                            }).done(function(data) {
-                                var findUser = false
-                                $.map(data, function(contribution, i) {
-                                    if (contribution.author.login === "numbbbbb") {
-                                        findUser = true
-                                        $.map(contribution.weeks, function(week, i) {
-                                            contributionBytes += week.a + week.d + week.c
-                                        })
-                                    }
-                                })
-                                if (findUser) {
-                                    barrier.barrierNumber--
-                                } else if (data.length === 100 && pageNumber < 10) {
-                                    getContributionInfo(pageNumber + 1)
-                                } else {
-                                    barrier.barrierNumber--
-                                }
-                            })
-                        }
-                        getContributionInfo(1)
-                    })
-                })
-                barrier.checkFinish(function() {
-                    console.log(contributionBytes)
-                })
-            })
-        }).fail(function(err) {
-            alert("false")
-        });
-    })
-    </script>
+    <script src="static/js/require.js"></script>
+    <script src="static/js/main.js"></script>
+    <script src="static/js/githuber.js"></script>
 </body>
 
 </html>
