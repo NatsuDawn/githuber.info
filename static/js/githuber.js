@@ -1,9 +1,12 @@
-require(['echarts','oauth', 'jquery', 'bootstrap','angular','angular-route'], function(){
+require(['angular','angularRoute','echarts','oauth', 'jquery', 'bootstrap'], function(angular){
+	alert(angular);
 	var myApp = angular.module('githuber', ['ngRoute']);
 	myApp.config(['$routeProvider',function($routeProvider) {
 		$routeProvider.
 		when('index', {controller: indexContrl, templateUrl: 'static/tpl/index.html'}).
-		when('search/:serchTarget', {controller: GithuberCtl, templateUrl: 'static/tpl/search.html'})
+		when('search/:serchTarget', {controller: GithuberCtl, templateUrl: 'static/tpl/search.html'}).otherwise({
+	       redirectTo: '/index'
+	    });
 	}]);
 	myApp.controller('GithuberCtl',['$scope',function($scope) {
 		$scope.targetUser = "numbbbbb";
@@ -268,66 +271,6 @@ require(['echarts','oauth', 'jquery', 'bootstrap','angular','angular-route'], fu
 
 
 	}]);
-
-    // contributionBytes = 0 // 自己给其他repo贡献的字节数
-    // $(".nav-pills a").css({
-    //     "borderRadius": "0px",
-    // })
-    // OAuth.initialize("sGKS5HvngIOeFDkWtsGIpEGuWAU")
-    // // 获取自己的repo并统计代码字节数
-
-
-
-
-
-    // }).fail(function(err) {
-    //     alert("false")
-    // });
-
-    //     // 获取个人信息
-    //     // github.get({
-    //     //     url: "https://api.github.com/users/numbbbbb",
-    //     //     dataType: "json"
-    //     // }).always(function(data) {
-    //     //     console.log(data)
-    //     // });
-    //     // 获取readme和issue内容
-    //     // github.get({
-    //     //         url: "https://api.github.com/repos/numbbbbb/the-swift-programming-language-in-chinese/readme",
-    //     //         dataType: "json"
-    //     //     }).always(function(data) {
-    //     //         readme = decodeURIComponent(escape(window.atob(data.content)));
-    //     //     }),
-    //     //     github.get({
-    //     //         url: "https://api.github.com/repos/numbbbbb/the-swift-programming-language-in-chinese/issues?page=1&per_page=10000",
-    //     //         data: {
-    //     //             state: "all"
-    //     //         },
-    //     //         dataType: "json"
-    //     //     }).always(function(data) {
-    //     //         for (var i in data) {
-    //     //             var issue = []
-    //     //             issue.title = data[i].title;
-    //     //             issue.body = data[i].body;
-    //     //             issue.comments = data[i].comments;
-    //     //             issue.comments_url = data[i].comments_url;
-    //     //             issue.comments_body = [];
-    //     //             issues.push(issue);
-    //     //         }
-    //     //         $.map(issues, function(issue, i) {
-    //     //             if (issue.comments > 0) {
-    //     //                 github.get({
-    //     //                     url: issue.comments_url + "?page=1&per_page=10000",
-    //     //                     dataType: "json"
-    //     //                 }).always(function(data) {
-    //     //                     for (var index in data) {
-    //     //                         issues[i].comments_body.push(data[index].body);
-    //     //                     }
-    //     //                 })
-    //     //             }
-    //     //         })
-
-    //     //     })
 
 
 })

@@ -37,6 +37,27 @@
 </head>
 
 <body style="background-image:url('/static/img/bg.png');" ng-controller="GithuberCtl">
+    <script src="/static/js/echarts.js"></script>
+    <script type="text/javascript">
+    require.config({
+        paths: {
+            echarts: '/static/js'
+        }
+    })
+
+    function drawChart(id, option, type) {
+        require(
+            [
+                'echarts',
+                'echarts/chart/' + type
+            ],
+            function(ec) {
+                var myChart = ec.init(document.getElementById(id))
+                myChart.setOption(option)
+            }
+        )
+    }
+    </script>
     <nav class="navbar navbar-default navbar-fixed-top navbar-inverse" role="navigation">
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
@@ -60,6 +81,7 @@
             </div>
         </div>
     </nav>
+
     <div class="container-fluid" style="margin-top:50px;">
         <div class="row">
             <div class="col-lg-2">
@@ -83,9 +105,9 @@
                 </div>
 
             </div>
-            <div class="col-lg-6 col-lg-offset-1">
+            <div class="col-lg-8">
                 <div class="row">
-                    <div class="col-lg-12 infoNote" style="margin-top:30px;">
+                    <div class="col-lg-10 col-lg-offset-1 infoNote" style="margin-top:30px;">
                         <h2 style="margin:0px;margin-left:-15px;padding:5px;background-color:black;width:12%;text-align:center;color:white;font-size:18px;">个人信息</h2>
                         <div class="row" style="margin-top:30px;padding:30px;">
                             <div class="col-lg-2 col-lg-offset-1">
@@ -123,18 +145,16 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-12 infoNote" style="margin-top:30px;">
+                    <div class="col-lg-10 infoNote" style="margin-top:30px;">
                         <h2 style="margin:0px;margin-left:-15px;padding:5px;background-color:black;width:12%;text-align:center;color:white;font-size:18px;">特性分析</h2>
                         <div class="row" style="margin-top:30px;padding:30px;">
-                        <div class="row">
-                            <div id="codeChart"></div>
+                            <div class="col-lg-12" id="byte-chart">
+                            </div>
                         </div>
                         <div class="row">
-                            <div class="col-lg-6">
-                                <div id="starChart"></div>
+                            <div class="col-lg-6" style="height:600px;" id="star-chart">
                             </div>
-                            <div class="col-lg-6">
-                                <div id="contriChart"></div>
+                            <div class="col-lg-6" style="height:600px;" id="contribution-chart">
                             </div>
 
                         </div>
@@ -143,9 +163,14 @@
             </div>
         </div>
     </div>
-    <script src="static/js/require.js"></script>
-    <script src="static/js/main.js"></script>
+
+    <script src="static/js/jquery-2.1.1.min.js"></script>
+    <script src="static/js/oauth.min.js"></script>
+    <script src="static/js/angular.min.js"></script>
+    <script src="static/js/angular-route.min.js"></script>
+    <script src="static/js/echarts-all.js"></script>
     <script src="static/js/githuber.js"></script>
+
 </body>
 
 </html>

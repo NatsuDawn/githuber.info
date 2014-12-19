@@ -4,10 +4,14 @@ require.config({
         "oauth" : ["static/js/oauth.min"],
         "bootstrap" : ["static/js/bootstrap.min"],
         "angular" : ["static/js/angular.min"],
-        "angular-route" : ["static/js/angular-route.min"],
+        "angularRoute" : ["static/js/angular-route"],
         "echarts" : ["static/js/echarts-all"]
     },
     shim: {
-        "bootstrap" : ["jquery"]
-    }
+        'angular' : {'exports' : 'angular'},
+        'angularRoute': ['angular']
+    },
+    priority: [
+        "angular"
+    ]
 });
